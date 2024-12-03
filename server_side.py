@@ -3,9 +3,8 @@ import threading
 import json 
 import requests 
 
-clients = {}
+clients = {} #here is a dictionary to save the client's information in
 
-# Inside the connection_thread function
 def connection_thread(sock, client_name, id):
     print(f">> Start of thread #{id} for {client_name}")
     clients[sock] = client_name 
