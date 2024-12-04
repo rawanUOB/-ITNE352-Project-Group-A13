@@ -19,8 +19,23 @@ def connection_thread(sock, client_name, id):
                 sock.sendall('Give a keyword for the top headlines:'.encode('utf-8')) 
                 key = sock.recv(1024).decode('utf-8')  
                 
-                data_of_headlines = fetch_top_headlines(key)
+                data_of_headlines, detailed_informations = fetch_top_headlines(key)
                 sock.sendall(data_of_headlines.encode('utf-8'))
+
+                #After sending the top 15 headlines I'll ask the client about which article they want to know more and then send it to them
+                sock.sendall(('Please choose the article number you want').encode('utf-8'))
+                specific_selection = int(sock.recv(1024).decode('utf-8') )-1 
+
+                source, author, title, description,url, publication = detailed_informations[specific_selection]
+                detailed_send = (
+                    f"Source: {source} \n" 
+                    f"Author: {author}\n"
+                    f"Title: {title}\n"
+                    f"URL: {url}\n"
+                    f"Description: {description}\n"
+                    f"Publication: {publication}\n"
+                )
+                sock.sendall(detailed_send.encode('utf-8'))
 
             if data == 'Get_sources' : 
                 sock.sendall('Give a keyword for the source:'.encode('utf-8')) 
@@ -52,19 +67,26 @@ def fetch_top_headlines(keyword):
     result = response.json()
     articles = result.get('articles', [])
     send_articles = []
+    detailed_articales = [] #save all informations but will not send it to the user from the beginning 
 
     for i, article in enumerate(articles[:15], start=1):
+        source = article.get('source','??')
+        auther = article.get('author','??')
         title = article.get('title', '??')
         description = article.get('description', '??')
+        publication = article.get('publishedAt', '??')
         url = article.get('url', '#')
 
-        send_articles.append(f"Article {i}:")
-        send_articles.append(f"Title: {title}")
-        send_articles.append(f"Description: {description}")
-        send_articles.append(f"Read more: {url}")
+        send_articles.append(f"Article {i}:") 
+        send_articles.append(f"source: {source}")
+        send_articles.append(f"Auther: {auther}")
+        send_articles.append(f"Title: {title}") 
         send_articles.append("")  
 
-    return "\n".join(send_articles)
+        detailed_articales.append((source, auther, title, description,url, publication))
+
+    returned_articles = "\n".join(send_articles)
+    return returned_articles , detailed_articales 
 
 #This function for the sources 
 def fetch_source(keyword): 
