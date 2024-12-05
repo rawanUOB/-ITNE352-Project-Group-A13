@@ -35,19 +35,32 @@ def connection_thread(sock, client_name, id):
                     f"Description: {description}\n"
                     f"Publication: {publication}\n"
                 )
+                
                 sock.sendall(detailed_send.encode('utf-8'))
 
             if data == 'Get_sources' : 
                 sock.sendall('Give a keyword for the source:'.encode('utf-8')) 
                 key = sock.recv(1024).decode('utf-8')
-                print(key)
 
-                data_of_sources = fetch_source(key)
-                print("data has been fetched")    
-                sock.sendall(data_of_sources.encode('utf-8')) 
-                print("data has been sent")
+                name_of_sources, details_source = fetch_source(key) 
+                sock.sendall(name_of_sources.encode('utf-8')) 
 
+                #After sending 15 source names the client will choose one of them 
+                sock.sendall(('Please choose the source number you want to recieve more informations about').encode('utf-8'))
+                specified = int(sock.recv(1024).decode('utf-8') )-1 
                 
+                name,description,category,language,country,url = details_source [specified]
+                detailed_source = (
+                    f"Name: {name} \n"
+                    f"Description: {description} \n"
+                    f"Category: {category} \n"
+                    f"Language: {language} \n"
+                    f"Country: {country} \n"
+                    f"URL: {url} \n"
+                )
+
+                sock.sendall(detailed_source.encode('utf-8'))
+
         except Exception as e:
             print(f"An error occurred: {e}")
             break
@@ -95,28 +108,27 @@ def fetch_source(keyword):
     response = requests.get(URL)
     response.raise_for_status()
     result = response.json()
-    
+
     sources = result.get('sources', [])
-    send_sources = [] #the sources will be saved in this list 
+    send_sources = [] #The source names will be saved in this list and sent to the client
+    detailed_sources = [] # All the other detailes will be saved in here but they'll not be sent 
 
     for i, source in enumerate(sources[:15], start=1):
-        id = source.get('id', '??')  
-        name = source.get('name', '??')
+        name = source.get('name', '??')  
         description = source.get('description', '??')
         category = source.get('category', '??')
         language = source.get('language', '??')
+        country = source.get('country', '??')
         url = source.get('url', '#')
 
         send_sources.append(f"Source {i}:")
-        send_sources.append(f"ID: {id}")
         send_sources.append(f"Name: {name}")
-        send_sources.append(f"Description: {description}")
-        send_sources.append(f"Category: {category}")
-        send_sources.append(f"Language: {language}")
-        send_sources.append(f"Read more: {url}")
         send_sources.append("")  
 
-    return "\n".join(send_sources) # The list will be sent to the user
+        detailed_sources.append((name,description,category,language,country,url))
+
+    returned_sources = "\n".join(send_sources)    
+    return returned_sources, detailed_sources # The will return 2 things 
 
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as ss: 
