@@ -5,9 +5,9 @@ import requests
 
 clients = {} #here is a dictionary to save the client's information in
 
-def connection_thread(sock, client_name, id):
-    print(f">> Start of thread #{id} for {client_name}")
-    clients[sock] = client_name 
+def connection_thread(sock, client_id, id):
+    print(f">> Start of thread #{id} for {client_id}")
+    client_name = sock.recv(1024).decode('utf-8') # I need to save the client name into a JSON file!
 
     while True: 
         try: 
@@ -61,14 +61,17 @@ def connection_thread(sock, client_name, id):
 
                 sock.sendall(detailed_source.encode('utf-8'))
 
+                if data == 'QUIT': 
+                    sock.close()         
+                    print('The connection has ended with client:', client_name)
+                    print(">> End of Thread no.", id)
+                    print(50 * '-') 
+
         except Exception as e:
             print(f"An error occurred: {e}")
             break
 
-    sock.close()         
-    print('The connection has ended with client:', client_name)
-    print(">> End of Thread no.", id)
-    print(50 * '-')
+    
 
 
 #This function for the top headlines     
