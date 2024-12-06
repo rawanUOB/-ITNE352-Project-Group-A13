@@ -5,6 +5,13 @@ import requests
 
 clients = {} #here is a dictionary to save the client's information in
 
+# A function that will save the client's info in a JSON file
+def client_data(client_name, option, data):
+    filename = f"{client_name}_{option}_A13.json"
+    
+    with open(filename, 'w') as json_file:
+        json.dump(data, json_file, indent=4)
+
 def connection_thread(sock, client_id, id):
     print(f">> Start of thread #{id} for {client_id}")
     client_name = sock.recv(1024).decode('utf-8') # I need to save the client name into a JSON file!
@@ -38,7 +45,10 @@ def connection_thread(sock, client_id, id):
                 
                 sock.sendall(detailed_send.encode('utf-8'))
 
-            if data == 'Get_sources' : 
+                #This will send the client name and thier option in the JSON file:
+                client_data(client_name, "Get_top_headlines", detailed_send) 
+
+            elif data == 'Get_sources' : 
                 sock.sendall('Give a keyword for the source:'.encode('utf-8')) 
                 key = sock.recv(1024).decode('utf-8')
 
@@ -61,18 +71,22 @@ def connection_thread(sock, client_id, id):
 
                 sock.sendall(detailed_source.encode('utf-8'))
 
-            if data == 'QUIT': 
-                sock.close()         
+                #This will send the client name and thier option in the JSON file:
+                client_data(client_name, "Get_top_headlines", detailed_source) 
+
+            elif data == 'QUIT':        
                 print('The connection has ended with client:', client_name)
-                print(">> End of Thread no.", id)
-                print(50 * '-') 
+                break
 
         except Exception as e:
             print(f"An error occurred: {e}")
             break
 
-    
+    sock.close()  
+    print(">> End of Thread no.", id)
+    print(50 * '-') 
 
+    
 
 #This function for the top headlines     
 def fetch_top_headlines(keyword): 
