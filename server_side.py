@@ -3,6 +3,8 @@ import threading
 import json 
 import requests 
 
+i =0 # will be used to keep track on the number of threads 
+
 # A function that will save the client's info in a JSON file
 def client_data(client_name, option, data):
     filename = f"{client_name}_{option}_A13.json"
@@ -40,7 +42,6 @@ def connection_thread(sock, client_id, id):
                     f"Description: {description}\n"
                     f"Publication: {publication}\n"
                 )
-                
                 sock.sendall(detailed_send.encode('utf-8'))
 
                 #This will send the client name and thier option in the JSON file:
@@ -66,7 +67,6 @@ def connection_thread(sock, client_id, id):
                     f"Country: {country} \n"
                     f"URL: {url} \n"
                 )
-
                 sock.sendall(detailed_source.encode('utf-8'))
 
                 #This will send the client name and thier option in the JSON file:
@@ -82,7 +82,7 @@ def connection_thread(sock, client_id, id):
 
     sock.close()  
     print(">> End of Thread no.", id)
-    print(50 * '-') 
+    print(50 * '-')  
 
 #This function for the top headlines     
 def fetch_top_headlines(keyword): 
@@ -143,6 +143,7 @@ def fetch_source(keyword):
     returned_sources = "\n".join(send_sources)    
     return returned_sources, detailed_sources # The will return 2 things 
 
+
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as ss: 
     ss.bind(("127.0.0.1", 49999)) 
     ss.listen(3)
@@ -151,5 +152,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as ss:
     while True: 
         sock_add, sock_name = ss.accept()
         print('The request has been accepted from', sock_name[0], "That has this port number:", sock_name[1])
-        the_thread = threading.Thread(target=connection_thread, args=(sock_add, sock_name[0], len(clients) + 1))
+        i +=1
+        the_thread = threading.Thread(target=connection_thread, args=(sock_add, sock_name[0], i ))
         the_thread.start()
