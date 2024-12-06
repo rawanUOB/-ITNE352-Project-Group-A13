@@ -3,8 +3,6 @@ import threading
 import json 
 import requests 
 
-clients = {} #here is a dictionary to save the client's information in
-
 # A function that will save the client's info in a JSON file
 def client_data(client_name, option, data):
     filename = f"{client_name}_{option}_A13.json"
@@ -86,8 +84,6 @@ def connection_thread(sock, client_id, id):
     print(">> End of Thread no.", id)
     print(50 * '-') 
 
-    
-
 #This function for the top headlines     
 def fetch_top_headlines(keyword): 
     key_val = '91b9c661fbeb441b958b81ab827689d2'
@@ -146,7 +142,6 @@ def fetch_source(keyword):
 
     returned_sources = "\n".join(send_sources)    
     return returned_sources, detailed_sources # The will return 2 things 
-
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as ss: 
     ss.bind(("127.0.0.1", 49999)) 
