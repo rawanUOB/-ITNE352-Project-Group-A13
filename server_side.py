@@ -61,11 +61,11 @@ def connection_thread(sock, client_id, id):
 
                 sock.sendall(detailed_source.encode('utf-8'))
 
-                if data == 'QUIT': 
-                    sock.close()         
-                    print('The connection has ended with client:', client_name)
-                    print(">> End of Thread no.", id)
-                    print(50 * '-') 
+            if data == 'QUIT': 
+                sock.close()         
+                print('The connection has ended with client:', client_name)
+                print(">> End of Thread no.", id)
+                print(50 * '-') 
 
         except Exception as e:
             print(f"An error occurred: {e}")
@@ -75,7 +75,7 @@ def connection_thread(sock, client_id, id):
 
 
 #This function for the top headlines     
-def fetch_top_headlines(keyword):
+def fetch_top_headlines(keyword): 
     key_val = '91b9c661fbeb441b958b81ab827689d2'
     URL = f"https://newsapi.org/v2/top-headlines?{keyword}&apiKey={key_val}"
     response = requests.get(URL)
