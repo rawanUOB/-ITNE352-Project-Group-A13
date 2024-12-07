@@ -15,6 +15,7 @@ def client_data(client_name, option, data):
 def connection_thread(sock, client_id, id):
     print(f">> Start of thread #{id} for {client_id}")
     client_name = sock.recv(1024).decode('utf-8') # I need to save the client name into a JSON file!
+    print (f"Welcome {client_name}")
 
     while True: 
         try: 
@@ -24,7 +25,8 @@ def connection_thread(sock, client_id, id):
         
             if data == 'Get_top_headlines':
                 sock.sendall('Give a keyword for the top headlines:'.encode('utf-8')) 
-                key = sock.recv(1024).decode('utf-8')  
+                key = sock.recv(1024).decode('utf-8') 
+                print (f"{client_name} has requested from top headlines articles about {key}")
                 
                 data_of_headlines, detailed_informations = fetch_top_headlines(key)
                 sock.sendall(data_of_headlines.encode('utf-8'))
@@ -43,6 +45,8 @@ def connection_thread(sock, client_id, id):
                     f"Publication: {publication}\n"
                 )
                 sock.sendall(detailed_send.encode('utf-8'))
+                title_detail = title
+                print(f"{client_name} requested more data about article name: {title_detail}")
 
                 #This will send the client name and thier option in the JSON file:
                 client_data(client_name, "Get_top_headlines", detailed_send) 
@@ -50,6 +54,8 @@ def connection_thread(sock, client_id, id):
             elif data == 'Get_sources' : 
                 sock.sendall('Give a keyword for the source:'.encode('utf-8')) 
                 key = sock.recv(1024).decode('utf-8')
+                print (f"{client_name} has requested sources about {key}")
+
 
                 name_of_sources, details_source = fetch_source(key) 
                 sock.sendall(name_of_sources.encode('utf-8')) 
@@ -68,12 +74,14 @@ def connection_thread(sock, client_id, id):
                     f"URL: {url} \n"
                 )
                 sock.sendall(detailed_source.encode('utf-8'))
+                title_detail = title
+                print(f"{client_name} requested more data about : {title_detail}")
 
                 #This will send the client name and thier option in the JSON file:
                 client_data(client_name, "Get_top_headlines", detailed_source) 
 
             elif data == 'QUIT':        
-                print('The connection has ended with client:', client_name)
+                print('The connection has ended with client ', client_name)
                 break
 
         except Exception as e:
