@@ -1,8 +1,8 @@
 # NEWS API Client Server Architecture 
 ITNE352 - semester 1 2024-2025 <br />
-Section 02 - Group name: A13 <br/> 
+Section 01 - Group name: A13 <br/> 
 Student #1 name and ID: Rawana Aqeel Almahoozi - 202102421 <br />
-Student #2 name and ID: Sara Jawan ALDawood - 20191937 
+Student #2 name and ID: Sara Jawad ALdawood - 20191937 
 
 ## Table of Contents
 1. Project Description
