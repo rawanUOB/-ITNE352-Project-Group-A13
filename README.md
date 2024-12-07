@@ -93,6 +93,77 @@ The server will also save this information to a JSON file and continue this proc
 
 * ### Client Side Explanation
 
+The client-side script is a GUI-based application that interacts with a server to fetch news data. It uses Python's socket for communication and tkinter for the interface.
+
+1- Server Connection
+The client connects to the server using a socket. If the connection is successful, the GUI displays a confirmation message.
+def connect_to_server(self):
+    try:
+        self.client_socket.connect(self.server_address)
+        self.results_text.insert(tk.END, "Connected to server.\n")
+    except Exception as e:
+        messagebox.showerror("Error", f"Could not connect to server: {e}")
+2- User Authentication
+The user enters a username, which is sent to the server. The GUI then locks further edits and welcomes the user.
+def send_username(self):
+    username = self.username_entry.get()
+    if not username:
+        messagebox.showwarning("Warning", "Please enter a username.")
+        return
+    self.client_socket.sendall(username.encode('utf-8'))
+    self.results_text.insert(tk.END, f"Welcome, {username}!\n")
+    self.username_entry.config(state='disabled')
+    self.connect_button.config(state='disabled')
+    self.show_main_menu()
+3- Main Menu
+The application displays options for fetching headlines, sources, or quitting.
+def show_main_menu(self):
+    self.results_text.insert(tk.END, "Choose:\n1 - Headlines\n2 - Sources\n3 - Quit\n")
+    self.input_entry.focus()
+    self.master.bind("<Return>", self.handle_main_menu_choice)
+4- Fetching Headlines & Sources
+The client handles requests for headlines or sources based on user input, allowing further filtering by keyword, category, or other criteria.
+def get_headlines_menu(self):
+    self.results_text.delete(1.0, tk.END)
+    self.results_text.insert(tk.END, "Choose:\n1 - Search for keywords\n2 - Search by category\n3 - Search by country\n4 - Back to the main menu\n")
+    self.input_entry.focus()
+    self.master.bind("<Return>", self.handle_headlines_choice)
+
+def send_keyword(self, key):
+    query = self.input_entry.get().strip()
+    if query:
+        send_query = key + query
+        self.client_socket.sendall(send_query.encode('utf-8'))
+        self.receive_results()
+5- Receiving and Displaying Results
+The server sends responses, which are displayed in the GUI. The user can select specific articles or sources for more details.
+def receive_results(self):
+    try:
+        results = self.client_socket.recv(4096).decode('utf-8')
+        self.results_text.insert(tk.END, "\nResults received from the server:\n")
+        self.results_text.insert(tk.END, results + "\n")
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred: {e}")
+6- Exiting the Application
+The client closes the connection gracefully when the user quits.
+python
+def quit(self):
+    self.client_socket.sendall(b'QUIT')
+    self.client_socket.close()
+    self.master.quit()
+ in Summary, This client-side application connects to a server, sends requests, and displays results in a user-friendly GUI. It handles:
+Connecting to the server
+User authentication
+Fetching and filtering news headlines or sources
+Displaying results and detailed information
+Gracefully exiting the application
+Example log in the GUI:
+“Connected to server.”
+“Welcome, Alice!”
+“Choose: 1 - Headlines, 2 - Sources, 3 - Quit”
+        
+
+
 
 ## Additional Concepts
 
