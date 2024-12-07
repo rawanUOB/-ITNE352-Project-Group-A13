@@ -73,21 +73,21 @@ The system is running in a simultaneous way. First, we need to start the server 
     * **def fetch_top_headlines(keyword):** This function handles all the requests related to the top headlines. It will fetch what is requested and send it back to the client in a human readable way. This function will be called from inside the connection_thread(sock, client_id, id) function.
     * **def fetch_source(keyword):** This function, similar to the previous function, handles all the requests related to the sources. It will fetch what is requested and send it back to the client in a human readable way. This function will be called from inside the connection_thread(sock, client_id, id) function.
 
-#### In summary, the server script will first start and wait for a client to connect. After connecting, it will print out the client name:
+In summary, the server script will first start and wait for a client to connect. After connecting, it will print out the client name:
 >> print (f"{client_name} has requested from top headlines articles about {key}")
 
-#### and then wait for the client to choose a request (headlines or sources)and print it on the screen:
+And then wait for the client to choose a request (headlines or sources)and print it on the screen:
 >> print (f"{client_name} has requested from top headlines articles about {key}")
 
 >> print(f"{client_name} requested more data about article name: {title_detail}")
 
-#### It will handle it, send 15 articles related to the request, and wait for the client to choose which article they're interested in. Then, it will send detailed information about the selected article (informations will be sent to the client in a human readable way not as a dictionary) and print the client name and the article title they requested on the server screen : 
+It will handle it, send 15 articles related to the request, and wait for the client to choose which article they're interested in. Then, it will send detailed information about the selected article (informations will be sent to the client in a human readable way not as a dictionary) and print the client name and the article title they requested on the server screen : 
 >> print(f"{client_name} requested more data about article name: {title_detail}")
 
 >> print(f"{client_name} requested more data about : {title_detail}")
 
 
-#### The server will also save this information to a JSON file and continue this process until the client chooses QUIT. At that point, the server will terminate the connection and print:
+The server will also save this information to a JSON file and continue this process until the client chooses QUIT. At that point, the server will terminate the connection and print:
 >> print ('The connection has ended with client ', client_name )
 
 
