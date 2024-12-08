@@ -166,6 +166,20 @@ Example log in the GUI:
 
 
 ## Additional Concepts
+so we add in the project object oriented programming (OOP), The purpose of this code is to create a GUI-based news client application that interacts with a server. The user can connect to the server, enter a username, navigate a menu to search for news headlines or sources, and view detailed results, all within a structured graphical interface.
+
+### Purpose of Object-Oriented Programming (OOP) in This Code:
+1. **Encapsulation**: Groups related data (attributes) and functionality (methods) into a single unit, making the program more organized and modular.
+2. **Abstraction**: Hides complex operations (e.g., socket communication) behind simple methods and a user-friendly GUI.
+3. **Modularity**: Divides responsibilities into methods, making the code easier to maintain and extend.
+4. **State Management**: Keeps track of the application's state (e.g., username, connection status) through attributes.
+
+### Effect of OOP on the Code:
+1. **Readability**: The code is well-structured and easier to understand.
+2. **Maintainability**: Isolating functionality into methods ensures that changes can be made without affecting the entire program.
+3. **Extensibility**: New features or enhancements can be added with minimal disruption to existing functionality.
+4. **Scalability**: The program is prepared for future growth, such as additional menu options or functionalities.
+5. **User-Friendliness**: Abstraction and GUI integration ensure that users interact with a simple interface rather than complex backend processes.
 
 ## Acknowledgment
 
