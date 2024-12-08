@@ -182,8 +182,14 @@ so we add in the project object oriented programming (OOP), The purpose of this 
 5. **User-Friendliness**: Abstraction and GUI integration ensure that users interact with a simple interface rather than complex backend processes.
 
 ## Acknowledgment
+I would like to extend special thanks to my partner in this project for his good performance, understanding, support for each other, accepting opinions from all sides, and his cooperation in teamwork, which led to this result in this project that was started and finished in a short period. Thank you, my partner, for this result and for everything in this project.
+
+Also we do not forget the basis of this project, which is our instructor , for his good explanation of the project and conveying the idea to us in the simplest form and his guidance and assistance at any time and without any hesitation and his experience that helped us to make the project appear in this form and master all the requirements of the project.
+
+We benefited a lot from this project and gained good experience in the Python language and enjoyed being partners in this project and the support coming from our instructor 
 
 ## Conclusion
+This project successfully implemented a user-friendly GUI-based news client application using object-oriented programming and socket communication. It provided valuable learning experiences in software design, network interaction, and user interface development. The project met its goals, enhanced our technical skills, and demonstrated the importance of collaboration and effective problem-solving in achieving successful outcomes.
 
 
 
