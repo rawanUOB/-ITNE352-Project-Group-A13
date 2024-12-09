@@ -166,20 +166,15 @@ Example log in the GUI:
 
 
 ## Additional Concepts
-so we add in the project object oriented programming (OOP), The purpose of this code is to create a GUI-based news client application that interacts with a server. The user can connect to the server, enter a username, navigate a menu to search for news headlines or sources, and view detailed results, all within a structured graphical interface.
+Developing a GUI without OOP relies on a procedural approach, using functions and global variables to manage the application. While it can still achieve functional and user-friendly interfaces, this approach has key limitations:
 
-### Purpose of Object-Oriented Programming (OOP) in This Code:
-1. **Encapsulation**: Groups related data (attributes) and functionality (methods) into a single unit, making the program more organized and modular.
-2. **Abstraction**: Hides complex operations (e.g., socket communication) behind simple methods and a user-friendly GUI.
-3. **Modularity**: Divides responsibilities into methods, making the code easier to maintain and extend.
-4. **State Management**: Keeps track of the application's state (e.g., username, connection status) through attributes.
+1. Structure: The code lacks modularity, making it harder to organize and understand.
+2. State Management: Global variables are used, which can lead to confusion and errors as the program grows.
+3. Code Duplication: Similar functionalities may be implemented repeatedly, increasing redundancy.
+4. Maintainability: Modifications or debugging are more challenging due to the scattered and interdependent codebase.
+5. Extensibility: Adding new features is difficult and can disrupt existing functionality.
 
-### Effect of OOP on the Code:
-1. **Readability**: The code is well-structured and easier to understand.
-2. **Maintainability**: Isolating functionality into methods ensures that changes can be made without affecting the entire program.
-3. **Extensibility**: New features or enhancements can be added with minimal disruption to existing functionality.
-4. **Scalability**: The program is prepared for future growth, such as additional menu options or functionalities.
-5. **User-Friendliness**: Abstraction and GUI integration ensure that users interact with a simple interface rather than complex backend processes.
+In contrast, OOP provides a more structured, maintainable, and scalable framework for GUI development, improving both the development process and long-term usability.
 
 ## Acknowledgment
 I would like to extend special thanks to my partner in this project for his good performance, understanding, support for each other, accepting opinions from all sides, and his cooperation in teamwork, which led to this result in this project that was started and finished in a short period. Thank you, my partner, for this result and for everything in this project.
