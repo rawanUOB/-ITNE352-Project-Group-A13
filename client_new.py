@@ -130,6 +130,11 @@ class NewsClientGUI:
     def receive_results(self):
         try:
             results = self.client_socket.recv(4096).decode('utf-8')
+            if "No data was found" in results:
+                self.results_text.insert(tk.END, results + "\n")
+                messagebox.showinfo("Information", results) 
+                self.show_main_menu()
+                return
             self.results_text.insert(tk.END, "\nResults received from the server:\n")
 
             #specific_request = self.client_socket.recv(1024).decode('utf-8')

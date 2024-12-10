@@ -30,6 +30,8 @@ def connection_thread(sock, client_id, id):
                 
                 data_of_headlines, detailed_informations = fetch_top_headlines(key)
                 sock.sendall(data_of_headlines.encode('utf-8'))
+                if "No data was found" in data_of_headlines:
+                    continue
 
                 #After sending the top 15 headlines I'll ask the client about which article they want to know more and then send it to them
                 sock.sendall(('Please choose the article number you want').encode('utf-8'))
@@ -52,13 +54,16 @@ def connection_thread(sock, client_id, id):
                 client_data(client_name, "Get_top_headlines", detailed_send) 
 
             elif data == 'Get_sources' : 
+
                 sock.sendall('Give a keyword for the source:'.encode('utf-8')) 
                 key = sock.recv(1024).decode('utf-8')
                 print (f"{client_name} has requested sources about {key}")
-
-
+            
                 name_of_sources, details_source = fetch_source(key) 
                 sock.sendall(name_of_sources.encode('utf-8')) 
+
+                if "No data was found" in name_of_sources:
+                    continue
 
                 #After sending 15 source names the client will choose one of them 
                 sock.sendall(('Please choose the source number you want to recieve more informations about').encode('utf-8'))
@@ -103,6 +108,9 @@ def fetch_top_headlines(keyword):
     send_articles = []
     detailed_articales = [] #save all informations but will not send it to the user from the beginning 
 
+    if not articles:
+        return f"No data was found about {keyword}.", []
+
     for i, article in enumerate(articles[:15], start=1):
         source = article.get('source','??')
         auther = article.get('author','??')
@@ -131,6 +139,9 @@ def fetch_source(keyword):
     result = response.json()
 
     sources = result.get('sources', [])
+    if not sources:
+        return f"No data was found about {keyword}.", []
+
     send_sources = [] #The source names will be saved in this list and sent to the client
     detailed_sources = [] # All the other detailes will be saved in here but they'll not be sent 
 
